@@ -36,7 +36,7 @@ export const useNftHook = ({
 
   useEffect(() => {
     const fn = async () => {
-      const nftListx = await fetchNftHoldings(anAddress); //use stxAddress here directly once ready for prod
+      const nftListx: any = await fetchNftHoldings(anAddress); //use stxAddress here directly once ready for prod
       setNftList(nftListx);
     };
     fn();

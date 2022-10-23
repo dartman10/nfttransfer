@@ -7,6 +7,11 @@ import { useNftHook } from '../../hooks/useNftHook';
 //  If user is not login, use a default account.
 // ---------------------------------------------------
 
+interface anObject {
+  asset_identifier: string;
+  value: {repr: string}
+}
+
 export const UserNft = () => {
   const { stxAddress } = useAccount();
   let nftList: string | null = '';
@@ -15,13 +20,10 @@ export const UserNft = () => {
 
   if (nftList == null) { return  <div>Account has no NFT</div>};
 
-  let valueX: string = '';
-  let valueXY: object = new Object;
   let nftArray: string[] = [];
 
   for (const [key, value] of Object.entries(nftList)) {
-    valueX = JSON.stringify(value);
-    valueXY = JSON.parse(valueX);
+    let valueXY: anObject = JSON.parse(JSON.stringify(value));  //  :)
     nftArray.push(' NFT_contract=' + valueXY.asset_identifier + ' | NFT_ID=' + valueXY.value.repr);
   }
 
