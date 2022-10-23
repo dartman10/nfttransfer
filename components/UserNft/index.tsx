@@ -1,103 +1,44 @@
-import { useAccount, useOpenContractCall } from '@micro-stacks/react';
+import { useAccount } from '@micro-stacks/react';
 import { useNftHook } from '../../hooks/useNftHook';
 
-//import { isSupportedNamespace } from '../../utils/ryderHandles';
-
 // ---------------------------------------------------
-//  If user is login, get and return all NFTs owned.
 //  No smart contract call here, just api get.
+//  If user is login, get and return all NFTs owned.
+//  If user is not login, use a default account.
 // ---------------------------------------------------
 
 export const UserNft = () => {
   const { stxAddress } = useAccount();
-  //const whatTheF = useNftHook({stxAddress});
-  const whatTheF = useNftHook({stxAddress: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM'});
-  
-  console.log('whatTheF' + JSON.stringify(whatTheF));
-  const whatTheFJson = JSON.stringify(whatTheF);
-  //console.log(Object.entries(whatTheF)[1]);
-  //const xxxx = (Object.entries(whatTheF)[1]);
-  //console.log (JSON.stringify(xxxx));
-  //console.log (xxxx["1"]);
-  //const yyyy = xxxx["0"];
+  const defaultAddress = 'SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S.marketplace-v3'; // default address for demonstration
+  let whatTheF: string | null = '';
+  if (stxAddress) {
+    whatTheF = useNftHook({stxAddress});
+  }
+  else {
+    whatTheF = useNftHook({stxAddress: defaultAddress});
+  }
 
-  if (!stxAddress) return <div> 'xxNothing from UserNft' </div>;  //return with nothing
-    return <div> {whatTheFJson} </div>;
+  if (whatTheF == null) { return  <div>Account has no NFT</div>};
+
+  let valueX: string = '';
+  let valueXY: object = new Object;
+  let nftArray: string[] = [];
+
+  for (const [key, value] of Object.entries(whatTheF)) {
+    valueX = JSON.stringify(value);
+    valueXY = JSON.parse(valueX);
+    nftArray.push(' NFT_contract=' + valueXY.asset_identifier + ' | NFT_ID=' + valueXY.value.repr);
+  }
+
+  if (!stxAddress) {
+    return (
+      <div>
+        <p>No active session, using default account {defaultAddress} </p>
+        <p>{JSON.stringify(nftArray)} </p>
+      </div>
+    ); 
+  }
+  else {
+    return <div> {JSON.stringify(nftArray)} </div>;
+  }
 };
-
-
-/*
-GET
-https://stacks-node-api.mainnet.stacks.co/extended/v1/tokens/nft/holdings/SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S.marketplace-v3
-https://stacks-node-api.mainnet.stacks.co/extended/v1/tokens/nft/holdings?principal=SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S.marketplace-v3
-*/
-
-//console.log(hashedSaltedName);
-
-/*
-if (isSupportedNamespace(namespace)) {
-    const { contractAddress, contractName } = namespaceContracts[
-      namespace as keyof typeof namespaceContracts
-    ] as { contractAddress: string; contractName: string };
-*/
-
-
-// right, no contact call here.  that will come later on actual NFT Transfer transaction
-/*
-const { openContractCall } = useOpenContractCall();
-openContractCall({
-  contractAddress,
-  contractName,
-  functionName: 'name-preorder',
-  functionArgs: [
-    bufferCV(Buffer.from(hashedSaltedName, 'hex')),
-  ],
-)
-}
-*/
-
-/*
-use this for reference from  community-handles, for contract call, not api call
-import { bufferCV, bufferCVFromString, ClarityValue } from 'micro-stacks/clarity';
-import { useOpenContractCall } from '@micro-stacks/react';
-import { PostCondition } from 'micro-stacks/transactions';
-import { fromHexString } from '../lib/strings';
-
-export const OwnerPubkeyButton = ({
-  stxAddress,
-  contract,
-  namespace,
-  pubkey,
-}: {
-  stxAddress: string;
-  contract: { address: string; name: string };
-  namespace: string;
-  pubkey: string;
-}) => {
-  const { openContractCall } = useOpenContractCall();
-  const label = `Set pubkey namespace .${namespace}`;
-  const contractAddress = contract.address;
-  const contractName = contract.name;
-  const functionName = 'set-approval-pubkey';
-  const functionArgs: ClarityValue[] = [bufferCV(fromHexString(pubkey))];
-
-  const postConditions: PostCondition[] = [];
-
-  return (
-    <button
-      onClick={() => {
-        void openContractCall({
-          contractAddress,
-          contractName,
-          functionName,
-          functionArgs,
-          postConditions,
-        });
-      }}
-    >
-      {label}
-    </button>
-  );
-};
-
-*/

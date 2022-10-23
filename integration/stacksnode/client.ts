@@ -6,8 +6,9 @@ import {
 import { StacksMainnet, StacksTestnet } from 'micro-stacks/network';
 
 export const mainnet = process.env.network === 'mainnet';
-console.log({ mainnet });
-const network = mainnet ? new StacksMainnet() : new StacksTestnet();
+//console.log({ mainnet });
+//const network = mainnet ? new StacksMainnet() : new StacksTestnet();
+const network = new StacksMainnet();
 
 const config = new Configuration({
   basePath: network.coreApiUrl,
