@@ -10,21 +10,25 @@ import { useNftHook } from '../../hooks/useNftHook';
 export const UserNft = () => {
   const { stxAddress } = useAccount();
   const defaultAddress = 'SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S.marketplace-v3'; // default address for demonstration
-  let whatTheF: string | null = '';
+  let anAddress: string = '';
+  let nftList: string | null = '';
+
   if (stxAddress) {
-    whatTheF = useNftHook({stxAddress});
+    anAddress = stxAddress;
   }
   else {
-    whatTheF = useNftHook({stxAddress: defaultAddress});
+    anAddress = defaultAddress;
   }
 
-  if (whatTheF == null) { return  <div>Account has no NFT</div>};
+  nftList = useNftHook({stxAddress: anAddress});
+
+  if (nftList == null) { return  <div>Account has no NFT</div>};
 
   let valueX: string = '';
   let valueXY: object = new Object;
   let nftArray: string[] = [];
 
-  for (const [key, value] of Object.entries(whatTheF)) {
+  for (const [key, value] of Object.entries(nftList)) {
     valueX = JSON.stringify(value);
     valueXY = JSON.parse(valueX);
     nftArray.push(' NFT_contract=' + valueXY.asset_identifier + ' | NFT_ID=' + valueXY.value.repr);
@@ -39,6 +43,6 @@ export const UserNft = () => {
     ); 
   }
   else {
-    return <div> {JSON.stringify(nftArray)} </div>;
+    return <div><p> {JSON.stringify(nftArray)} </p></div>;
   }
 };
