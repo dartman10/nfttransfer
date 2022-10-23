@@ -12,7 +12,7 @@ import { namespaceContracts } from '../integration/stacksnode/client';
 //  return domain
 //    .replace(DOMAIN_CHARACTER_REGEX, '')
 //    .substring(0, DOMAIN_MAX_LENGTH);//
-}
+//}
 
 export function isSupportedNamespace(namespace: string) {
   return Object.hasOwn(namespaceContracts, namespace);
