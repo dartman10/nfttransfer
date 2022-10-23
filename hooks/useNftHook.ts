@@ -24,9 +24,19 @@ export const useNftHook = ({
 }) => {
   const [nftList, setNftList] = useState(null);
 
+  // for default values during testing
+  const defaultAddress =
+    'SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S.marketplace-v3'; // default address for demonstration
+  let anAddress: string = '';
+  if (stxAddress) {
+    anAddress = stxAddress;
+  } else {
+    anAddress = defaultAddress;
+  }
+
   useEffect(() => {
     const fn = async () => {
-      const nftListx = await fetchNftHoldings(stxAddress);
+      const nftListx = await fetchNftHoldings(anAddress); //use stxAddress here directly once ready for prod
       setNftList(nftListx);
     };
     fn();

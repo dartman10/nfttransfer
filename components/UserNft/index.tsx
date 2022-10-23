@@ -9,18 +9,9 @@ import { useNftHook } from '../../hooks/useNftHook';
 
 export const UserNft = () => {
   const { stxAddress } = useAccount();
-  const defaultAddress = 'SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S.marketplace-v3'; // default address for demonstration
-  let anAddress: string = '';
   let nftList: string | null = '';
 
-  if (stxAddress) {
-    anAddress = stxAddress;
-  }
-  else {
-    anAddress = defaultAddress;
-  }
-
-  nftList = useNftHook({stxAddress: anAddress});
+  nftList = useNftHook({stxAddress: stxAddress});
 
   if (nftList == null) { return  <div>Account has no NFT</div>};
 
@@ -37,7 +28,7 @@ export const UserNft = () => {
   if (!stxAddress) {
     return (
       <div>
-        <p>No active session, using default account {defaultAddress} </p>
+        <p>No active session, using default account</p>
         <p>{JSON.stringify(nftArray)} </p>
       </div>
     ); 
